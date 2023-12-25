@@ -36,7 +36,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       leading: IconButton(onPressed: (){}, icon: const  Icon(Icons.favorite,color: Color.fromARGB(255, 167, 11, 11),size: 40)), 
                       title:mytext('Favorite',20,Colors.black),
                       trailing: IconButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const FavoriteScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoriteScreen(
+                          visible: true,
+                        )));
                       }, icon:const Icon(Icons.arrow_forward_ios,color: Colors.white,)),  
                     ),
                     ListTile(
@@ -138,12 +140,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       },
       ),
     ),
+    
               ],
             ),
         ),
     );
      }
-     void showCreatePlaylistBottomSheet({required BuildContext context ,String? name,Listmodel? playlists}) {
+   void showCreatePlaylistBottomSheet({required BuildContext context ,String? name,Listmodel? playlists}) {
     showBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -151,18 +154,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
          playlistcontroller.text =newPlaylistName;
         return Container(
           height: 250,
-          color: Colors.white54,
+          color: Colors.white54, 
           child: Column(
             children: [
                SizedBox(  height: MediaQuery.of(context).size.height * 0.05, ),
               const Text('Create  Playlist', style: TextStyle(fontSize: 20)),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: TextFormField(
+                child: TextField(
                   controller:  playlistcontroller,
                   onChanged: (value) {
               newPlaylistName = value;
-           } ),
+              } ),
               ),
                SizedBox(  height: MediaQuery.of(context).size.height * 0.05, ),
               Row(

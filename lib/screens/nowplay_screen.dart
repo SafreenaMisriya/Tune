@@ -6,12 +6,12 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:tune/Povider/image_provider.dart';
-import 'package:tune/Screens/lyric_screen.dart';
 import 'package:tune/db/function/db_function.dart';
 import 'package:tune/db/model/db_favmodel.dart';
 import 'package:tune/db/model/db_model.dart';
 import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
+import 'package:tune/screens/lyric_screen.dart';
 import 'package:tune/settings/share.dart';
 
 
@@ -61,314 +61,226 @@ class _PlayScreenState extends State<PlayScreen> {
       }
     });
   }
-  void checkIsFavorite() async {
-    final dynamic sn;
-    if (widget.FavSongModel != null) {
-      sn = widget.FavSongModel![widget.index];
-    } else {
-      sn = widget.songModel![widget.index];
-    }
-    final song = sn;
-    final favSongs = await favMusic();
-    final isSongInFavorites =
-        favSongs.any((favSong) => favSong.songid == song.songid.toInt());
-
-    setState(() {
-      islike = isSongInFavorites;
-    });
-  }
-
-  void toggleFavorite() async {
-    final dynamic sn;
-    if (widget.FavSongModel != null) {
-      sn = widget.FavSongModel![widget.index];
-    } else {
-      sn = widget.songModel![widget.index];
-    }
-    final song = sn;
-    final favSongs = await favMusic();
-
-    if (islike) {
-      await removeFromFavourite(song.songid.toInt());
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Song removed from favorites',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } else {
-      final favSong = Favmodel(
-        name: song.name,
-        songid: song.songid.toInt(),
-        uri: song.uri,
-        artist: song.artist.toString(),
-        path: song.data(),
-      );
-      await addFavSong(favsongs: [...favSongs, favSong]);
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Song added to favorites',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.grey,
-        ),
-      );
-    }
-    checkIsFavorite();
-  }
-  void playSong() async {
-    addSongToRecentlyPlayed(widget.songModel!=null? widget.songModel![widget.index].songid:widget.FavSongModel![widget.index].songid);
-    try {
-      String uri;
-      if (widget.FavSongModel != null) {
-        uri = widget.FavSongModel![widget.index].uri;
-      } else {
-        uri = widget.songModel![widget.index].uri;
-      }
-      await widget.audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.parse(uri)),
-      );
-   widget.audioPlayer.play();
-      widget.audioPlayer.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);
-      _isPlaying = true;
-      widget.audioPlayer.durationStream.listen((d) {
-        if(mounted){
-           setState(() {
-          _duration = d!;
-        });
-        }
-      });
-      widget.audioPlayer.positionStream.listen((p) {
-        if(mounted){
-           setState(() {
-          _position = p;
-        });
-        } 
-      });
-    } on Exception {
-      debugPrint('Cannot Parse song');
-    }
-  }
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold (
       body: Container(
-        decoration: BoxDecoration(
-          gradient: bgTheme2(),
-        ),
-        child: Column(
-          children: [
-             SizedBox(  height: MediaQuery.of(context).size.height * .05,
-                ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                    color: Colors.white,
+          decoration: BoxDecoration(
+            gradient: bgTheme2(),
+          ),
+          child: Column(
+            children: [
+               SizedBox(  height: MediaQuery.of(context).size.height * .05,
                   ),
-                ),
-                 SizedBox(width: MediaQuery.of(context).size.width * 0.5,),
-                IconButton(
-                  onPressed: () {
-                      sharemusic(widget.songModel![widget.index]);
-                  },
-                  icon: const Icon(
-                    Icons.share,
-                    size: 30,
-                  ),
-                  color: Colors.white,
-                )
-              ],
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 60),
-                child: Container(
-                  width: 250,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.white30,
-                    borderRadius: BorderRadius.circular(49),
-                  ),
-                  child: const ArtWorkWidget(),
-                ),
-              ),
-            ),
-           Padding(
-             padding: const EdgeInsets.only(left: 290),
-             child: IconButton(onPressed: (){
-              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>const LyricsScreen()));
-             }, icon: const Icon(Icons.arrow_forward_ios_rounded,size: 30,color: Colors.white,)),
-           ),
-            Column(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: Center(
-                    child: Text(
-                        widget.FavSongModel != null
-                            ? widget.FavSongModel![widget.index].name
-                            : widget.songModel![widget.index].name,
-                             overflow:TextOverflow.ellipsis,
-                        style: const TextStyle(color: Colors.white, fontSize: 17)),
-                  ),
-                ),
-                SizedBox(  height: MediaQuery.of(context).size.height * .04,),
-                SizedBox(width: MediaQuery.of(context).size.width * 0.5,
-                  child: Center(
-                    child: Text(
-                        widget.FavSongModel != null
-                            ? widget.FavSongModel![widget.index].artist.toString()
-                            : widget.songModel![widget.index].artist.toString() ==
-                                    "<unknown>"
-                                ? "<unknown>"
-                                : widget.FavSongModel != null
-                                    ? widget.FavSongModel![widget.index].artist.toString() 
-                                    : widget.songModel![widget.index].artist.toString(),
-                                         overflow:TextOverflow.ellipsis,
-                        style: const TextStyle(color: Colors.white, fontSize: 15)),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(  height: MediaQuery.of(context).size.height * 0.03, ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: toggleFavorite,
-                    icon: Icon(
-                      islike ? Icons.favorite : Icons.favorite_border_outlined,
-                      color: Colors.white,
-                      size: 25,
-                    )),
-                IconButton(
-                    onPressed: () {  
-                      bottomplaylistsheet(context: context,
-                       songId:   widget.FavSongModel != null
-                            ? widget.FavSongModel![widget.index].songid
-                            : widget.songModel![widget.index].songid);
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
                     icon: const Icon(
-                      Icons.playlist_add,
-                      color: Colors.white,
-                      size: 25,
-                    )),
-              ],
-            ),
-             SizedBox(  height: MediaQuery.of(context).size.height * .01,),
-            Slider(
-              min: const Duration(microseconds: 0).inSeconds.toDouble(),
-              value: _position.inSeconds.toDouble(),
-              max: _duration.inSeconds.toDouble(),
-              onChanged: (value) {
-                ChangeToSeconds(value.toInt());
-              },
-              activeColor: Colors.white,
-              inactiveColor: Colors.black,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(_position.toString().split(".")[0],
-                    style: const TextStyle(color: Colors.white)),
-                SizedBox(  width: MediaQuery.of(context).size.width * 0.7,
-                ),
-                Text(_duration.toString().split(".")[0],
-                    style: const TextStyle(color: Colors.white)),
-              ],
-            ),
-             SizedBox(  height: MediaQuery.of(context).size.height * .03,
-                ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isShuffling = !_isShuffling; // Toggle shuffling
-                    });
-                  },
-                  icon: Icon(Icons.shuffle_sharp,
+                      Icons.arrow_back,
                       size: 30,
-                      color: _isShuffling ?const Color.fromARGB(255, 153, 81, 215) : Colors.white),
+                      color: Colors.white,
+                    ),
+                  ),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.5,),
+                  IconButton(
+                    onPressed: () {
+                        sharemusic(widget.songModel![widget.index]);
+                    },
+                    icon: const Icon(
+                      Icons.share,
+                      size: 30,
+                    ),
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.white30,
+                      borderRadius: BorderRadius.circular(49),
+                    ),
+                    child: const ArtWorkWidget(),
+                  ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    _playPrevious();
-                    playSong();
-                    context.read<songModelProvider>().setId(
-                        widget.FavSongModel != null
-                            ? widget.FavSongModel![widget.index].songid
-                            : widget.songModel![widget.index].songid);
-                  },
-                  icon: const Icon(Icons.skip_previous_sharp,
-                      size: 45, color: Colors.white),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      if (_isPlaying) {
-                        widget.audioPlayer.pause();
-                      } else {
-                        widget.audioPlayer.play();
-                      }
-                      _isPlaying = !_isPlaying;
-                    });
-                  },
-                  icon: Icon(
-                      _isPlaying
-                          ? Icons.pause_circle_outlined
-                          : Icons.play_circle_outline,
-                      size: 45,
-                      color: Colors.white),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _playNext();
+              ),
+             Padding(
+               padding: const EdgeInsets.only(left: 290),
+               child: IconButton(onPressed: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>LyricsPage(
+                  songName: widget.songModel![widget.index].name,
+                  artistName: widget.songModel![widget.index].artist,
+    
+                )));
+               }, icon: const Icon(Icons.arrow_forward_ios_rounded,size: 30,color: Colors.white,)),
+             ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Center(
+                      child: Text(
+                          widget.FavSongModel != null
+                              ? widget.FavSongModel![widget.index].name
+                              : widget.songModel![widget.index].name,
+                               overflow:TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white, fontSize: 17)),
+                    ),
+                  ),
+                  SizedBox(  height: MediaQuery.of(context).size.height * .04,),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.5,
+                    child: Center(
+                      child: Text(
+                          widget.FavSongModel != null
+                              ? widget.FavSongModel![widget.index].artist.toString()
+                              : widget.songModel![widget.index].artist.toString() ==
+                                      "<unknown>"
+                                  ? "<unknown>"
+                                  : widget.FavSongModel != null
+                                      ? widget.FavSongModel![widget.index].artist.toString() 
+                                      : widget.songModel![widget.index].artist.toString(),
+                                           overflow:TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(  height: MediaQuery.of(context).size.height * 0.03, ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: toggleFavorite,
+                      icon: Icon(
+                        islike ? Icons.favorite : Icons.favorite_border_outlined,
+                        color: Colors.white,
+                        size: 25,
+                      )),
+                  IconButton(
+                      onPressed: () {  
+                        bottomplaylistsheet(context: context,
+                         songId:   widget.FavSongModel != null
+                              ? widget.FavSongModel![widget.index].songid
+                              : widget.songModel![widget.index].songid);
+                      },
+                      icon: const Icon(
+                        Icons.playlist_add,
+                        color: Colors.white,
+                        size: 25,
+                      )),
+                ],
+              ),
+               SizedBox(  height: MediaQuery.of(context).size.height * .01,),
+              Slider(
+                min: const Duration(microseconds: 0).inSeconds.toDouble(),
+                value: _position.inSeconds.toDouble(),
+                max: _duration.inSeconds.toDouble(),
+                onChanged: (value) {
+                  ChangeToSeconds(value.toInt());
+                },
+                activeColor: Colors.white,
+                inactiveColor: Colors.black,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(_position.toString().split(".")[0],
+                      style: const TextStyle(color: Colors.white)),
+                  SizedBox(  width: MediaQuery.of(context).size.width * 0.7,
+                  ),
+                  Text(_duration.toString().split(".")[0],
+                      style: const TextStyle(color: Colors.white)),
+                ],
+              ),
+               SizedBox(  height: MediaQuery.of(context).size.height * .03,
+                  ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isShuffling = !_isShuffling; // Toggle shuffling
+                      });
+                    },
+                    icon: Icon(Icons.shuffle_sharp,
+                        size: 30,
+                        color: _isShuffling ?const Color.fromARGB(255, 153, 81, 215) : Colors.white),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _playPrevious();
                       playSong();
                       context.read<songModelProvider>().setId(
                           widget.FavSongModel != null
                               ? widget.FavSongModel![widget.index].songid
                               : widget.songModel![widget.index].songid);
-                    });
-                  },
-                  icon: const Icon(Icons.skip_next_sharp,
-                      size: 45, color: Colors.white),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isLooping = !_isLooping;
-                      widget.audioPlayer.setLoopMode(
-                          _isLooping ? LoopMode.one : LoopMode.off);
-                    });
-                  },
-                  icon: Icon(
-                    Icons.loop_outlined,
-                    size: 30,
-                    color: _isLooping ? const Color.fromARGB(255, 153, 81, 215): Colors.white,
+                    },
+                    icon: const Icon(Icons.skip_previous_sharp,
+                        size: 45, color: Colors.white),
                   ),
-                ),
-              ],
-            )
-          ],
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (_isPlaying) {
+                          widget.audioPlayer.pause();
+                        } else {
+                          widget.audioPlayer.play();
+                        }
+                        _isPlaying = !_isPlaying;
+                      });
+                    },
+                    icon: Icon(
+                        _isPlaying
+                            ? Icons.pause_circle_outlined
+                            : Icons.play_circle_outline,
+                        size: 45,
+                        color: Colors.white),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _playNext();
+                        playSong();
+                        context.read<songModelProvider>().setId(
+                            widget.FavSongModel != null
+                                ? widget.FavSongModel![widget.index].songid
+                                : widget.songModel![widget.index].songid);
+                      });
+                    },
+                    icon: const Icon(Icons.skip_next_sharp,
+                        size: 45, color: Colors.white),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isLooping = !_isLooping;
+                        widget.audioPlayer.setLoopMode(
+                            _isLooping ? LoopMode.one : LoopMode.off);
+                      });
+                    },
+                    icon: Icon(
+                      Icons.loop_outlined,
+                      size: 30,
+                      color: _isLooping ? const Color.fromARGB(255, 153, 81, 215): Colors.white,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
-      ),
     );
+    
   }
 
   // ignore: non_constant_identifier_names
@@ -379,7 +291,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
 void _playNext() {
   if (_isShuffling) {
-    // Shuffle the list of songs
     List<MusicSong> shuffledSongs;
     if (widget.FavSongModel != null) {
       shuffledSongs = List.from(widget.FavSongModel!);
@@ -389,17 +300,14 @@ void _playNext() {
       shuffledSongs.shuffle();
     }
 
-    // Find the index of the current song in the shuffled list
     int currentIndex = shuffledSongs.indexWhere((song) =>
         song.songid ==
         (widget.FavSongModel != null
             ? widget.FavSongModel![widget.index].songid
             : widget.songModel![widget.index].songid));
 
-    // Get the next index in the shuffled list
     int nextIndex = (currentIndex + 1) % shuffledSongs.length;
 
-    // Play the next song from the shuffled list
     widget.audioPlayer.stop();
     widget.audioPlayer.setAudioSource(
       AudioSource.uri(Uri.parse(shuffledSongs[nextIndex].uri)),
@@ -504,6 +412,100 @@ void _playNext() {
         widget.index = previousIndex;
       });
       checkIsFavorite();
+    }
+  }
+  void checkIsFavorite() async {
+    final dynamic sn;
+    if (widget.FavSongModel != null) {
+      sn = widget.FavSongModel![widget.index];
+    } else {
+      sn = widget.songModel![widget.index];
+    }
+    final song = sn;
+    final favSongs = await favMusic();
+    final isSongInFavorites =
+        favSongs.any((favSong) => favSong.songid == song.songid.toInt());
+
+    setState(() {
+      islike = isSongInFavorites;
+    });
+  }
+
+  void toggleFavorite() async {
+    final dynamic sn;
+    if (widget.FavSongModel != null) {
+      sn = widget.FavSongModel![widget.index];
+    } else {
+      sn = widget.songModel![widget.index];
+    }
+    final song = sn;
+    final favSongs = await favMusic();
+
+    if (islike) {
+      await removeFromFavourite(song.songid.toInt());
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Song removed from favorites',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else {
+      final favSong = Favmodel(
+        name: song.name,
+        songid: song.songid.toInt(),
+        uri: song.uri,
+        artist: song.artist.toString(),
+        path: song.toString(),
+      );
+      await addFavSong(favsongs: [...favSongs, favSong]);
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Song added to favorites',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.grey,
+        ),
+      );
+    }
+    checkIsFavorite();
+  }
+  void playSong() async {
+    addSongToRecentlyPlayed(widget.songModel!=null? widget.songModel![widget.index].songid:widget.FavSongModel![widget.index].songid);
+    try {
+      String uri;
+      if (widget.FavSongModel != null) {
+        uri = widget.FavSongModel![widget.index].uri;
+      } else {
+        uri = widget.songModel![widget.index].uri;
+      }
+      await widget.audioPlayer.setAudioSource(
+        AudioSource.uri(Uri.parse(uri)),
+      );
+   widget.audioPlayer.play();
+      widget.audioPlayer.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);
+      _isPlaying = true;
+      widget.audioPlayer.durationStream.listen((d) {
+        if(mounted){
+           setState(() {
+          _duration = d!;
+        });
+        }
+      });
+      widget.audioPlayer.positionStream.listen((p) {
+        if(mounted){
+           setState(() {
+          _position = p;
+        });
+        } 
+      });
+    } on Exception {
+      debugPrint('Cannot Parse song');
     }
   }
   

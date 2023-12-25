@@ -47,13 +47,15 @@ class _SearchScreenState extends State<SearchScreen> {
         findsong = songlist;
       });
     } else {
-      setState(() {
-        findsong = songlist
+      
+       setState(() {
+          findsong = songlist
             .where((song) =>
                 song.name.toLowerCase().contains(searchController.text.toLowerCase()) ||
                 song.artist.toLowerCase().contains(searchController.text.toLowerCase()))
             .toList();
-      });
+       });
+      
     }
   }
   @override
@@ -73,6 +75,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       controller: searchController,
                       onChanged: (value) {
                         searchFunction();
+                        setState(() {
+                          
+                        });
                       },
                       cursorColor: Colors.grey,
                       decoration: InputDecoration(
@@ -90,6 +95,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             onPressed: () {
                               searchController.clear();
                               searchFunction();
+                              setState(() {
+                                
+                              });
                             },
                             icon:const Icon(Icons.clear)),
                       ),
@@ -107,8 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (ctx, index) {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                  decoration:const  BoxDecoration(
                       color: Colors.white38),
                   child: ListTile(
                     leading:  QueryArtworkWidget(

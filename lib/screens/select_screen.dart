@@ -55,8 +55,7 @@ class _PlaylistallState extends State<Playlistall> {
                           
                       return Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                      decoration:const BoxDecoration(
                           color: Colors.white38),
                       child: ListTile(
                     leading:  QueryArtworkWidget(
@@ -68,7 +67,7 @@ class _PlaylistallState extends State<Playlistall> {
                        ),
                         title: Text(
                           // ignore: unnecessary_string_interpolations
-                          '${item.data![index].name.substring(0,13)}',
+                          '${item.data![index].name}',
                            overflow: TextOverflow.ellipsis,
                         ),
                         // ignore: unnecessary_string_interpolations

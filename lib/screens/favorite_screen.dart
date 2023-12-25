@@ -13,9 +13,16 @@ import 'package:tune/reuse_code/fonts.dart';
 import 'package:tune/screens/home_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
-  const FavoriteScreen({super.key});
+ final bool visible;
+   // ignore: prefer_const_constructors_in_immutables
+   FavoriteScreen({
+    Key ? key,
+   required this.visible,
+   } ): super(key: key);
   @override
+  
   State<FavoriteScreen> createState() => _FavoriteScreenState();
+  
 }
 class _FavoriteScreenState extends State<FavoriteScreen> {
 late Future<List<Favmodel>>dbfavsong;
@@ -30,7 +37,6 @@ late Future<List<Favmodel>>dbfavsong;
       dbfavsong=favMusic();
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,24 +48,31 @@ late Future<List<Favmodel>>dbfavsong;
             ),
             child: Column(
               children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                        child:mytext('Favorite', 20, Colors.white)
-                      ),
-                    ),
+                  SizedBox(  width: MediaQuery.of(context).size.width * 0.2,
+                  ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                     widget.visible
+                ?IconButton(
+                   onPressed: () {Navigator.pop(context); }, 
+                   icon:const Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white,))
+                :Container(),
+                ]
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(12.0),
+                 child: Center(
+                  child:mytext('Favorite', 20, Colors.white) ,  
+                 ),
+               ),
+                 
                 Expanded(
                    child: FutureBuilder(
                          future: dbfavsong,
                          builder: (context, item) {
                            if (item.data == null) {  
-                             return const CircularProgressIndicator();
-                           } else if (item.connectionState == ConnectionState.waiting) {
-                             return const Center(child:  CircularProgressIndicator());
-                           } else if (item.hasError) {
-                             return const Center(
-                               child: Text('Error'),
-                             );
+                             return const  Center(child: CircularProgressIndicator());
                            } else if(item.data!.isEmpty){
                             return Center(
                               child:Column(
@@ -76,8 +89,7 @@ late Future<List<Favmodel>>dbfavsong;
                                                itemBuilder: (context, index) {
                                                  return Container(
                                                    margin: const EdgeInsets.only(bottom: 10),
-                                                   decoration: BoxDecoration(
-                                                       borderRadius: BorderRadius.circular(30),
+                                                   decoration:const BoxDecoration(                                                     
                                                        color: Colors.white38),
                                                    child: ListTile(
                                                  leading:  QueryArtworkWidget(

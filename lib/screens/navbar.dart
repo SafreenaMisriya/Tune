@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tune/settings/about_screen.dart';
+import 'package:tune/settings/privacy_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavScreen extends StatelessWidget {
   const NavScreen({super.key});
@@ -28,22 +31,35 @@ class NavScreen extends StatelessWidget {
               // shareapp();
               },
           ),
-         const ListTile(
-            leading: Icon(Icons.privacy_tip_sharp),iconColor: Colors.black,
-            title:  Text('Privacy Policy'),
-           // onTap: () => null,
-          ),
-          const ListTile(
-            leading:Icon(Icons.star_border),iconColor: Colors.black,
-            title:  Text('Rate Us'),   
-          ),
-        const  ListTile(
-            leading:    Icon(Icons.feedback_rounded),iconColor: Colors.black,
-            title:  Text('Feedback'),
-           
+             ListTile(
+            leading: const   Icon(Icons.feedback_rounded),iconColor: Colors.black,
+            title:const  Text('Feedback'),
+            onTap: (){
+               _email();
+            },
           ), 
+          ListTile(
+            leading:const Icon(Icons.lock),iconColor: Colors.black,
+            title: const Text('Privacy Policy'),
+            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const PrivcyScreen()));}
+          ),
+          ListTile(
+            leading:const Icon(Icons.info),iconColor: Colors.black,
+            title: const Text('About '),  
+               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const AboutScreen()));} 
+          ),
+            SizedBox(  height: MediaQuery.of(context).size.height * 0.02, ),
+           const Center(child: Text('V.1.0.0')),
+           
+           
         ],
       ),
     );
+  }
+  Future<void> _email() async {
+    // ignore: deprecated_member_use
+    if (await launch('mailto:safreenamisriya02@mail.com')) {
+      throw "Try Again";
+    }
   }
 }

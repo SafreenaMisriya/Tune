@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:tune/db/function/db_function.dart';
 import 'package:tune/db/model/db_playlistmodel.dart';
+import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
  TextEditingController playlistcontroller =TextEditingController();
 void showCreatePlaylistBottomSheet({required BuildContext context ,String? name,Listmodel? playlists}) {
@@ -12,11 +13,12 @@ void showCreatePlaylistBottomSheet({required BuildContext context ,String? name,
          playlistcontroller.text =newPlaylistName;
         return Container(
           height: 250,
+          
           color: Colors.white54,
           child: Column(
             children: [
              SizedBox(  height: MediaQuery.of(context).size.height * 0.05, ),
-              const Text('Create  Playlist', style: TextStyle(fontSize: 20)),
+               Text('Create  Playlist', style: TextStyle(fontSize: 20,color: voilet)),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
@@ -104,12 +106,20 @@ void showCreatePlaylistBottomSheet({required BuildContext context ,String? name,
                     Navigator.pop(context);
                     },
                   );
+                  
                 },
               );
             }
       },
       ),
     ),
+    ListTile(
+      leading:const Icon(Icons.add,color: Colors.white,size: 30,),
+      title: mytext2('Create Playlist'),
+      onTap: () {
+        showCreatePlaylistBottomSheet(context: context);
+      },
+    )
           ],
         ),
       );

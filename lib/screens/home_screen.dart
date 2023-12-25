@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     const HomeContent(),
     const SearchScreen(),
-    const FavoriteScreen(),
+   FavoriteScreen(visible: false,),
     const PlaylistScreen(),
   ];
   @override
@@ -95,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               _currentIndex = index;
             });
-
             _pageController.jumpToPage(index);
           },
           items:  [
@@ -185,17 +184,16 @@ late Widget  leadingWidget;
         builder: (context, item) {
           if (item.data == null) {
             getaudio();
-            return const CircularProgressIndicator();
+            return  const Center(child: CircularProgressIndicator());
           } else if (item.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return  const Center(child: CircularProgressIndicator());
           } else {
             return ListView.builder(
                 itemCount: item.data!.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
+                    decoration:const BoxDecoration(
                         color: Colors.white38),
                     child: ListTile(
                   leading:  QueryArtworkWidget(

@@ -16,8 +16,16 @@ bgTheme2() {
       end: Alignment.bottomCenter,
       colors: [
       Color.fromARGB(255, 153, 81, 215),
-      Color.fromARGB(255, 21, 1, 30),
-       
+      Color.fromARGB(255, 21, 1, 30), 
+      ]);
+}
+bgTheme3() {
+  return const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+      Color.fromARGB(255, 208, 170, 240),
+      Color.fromARGB(255, 61, 60, 62), 
       ]);
 }
 Color voilet = const  Color.fromARGB(255, 61, 20, 93);
