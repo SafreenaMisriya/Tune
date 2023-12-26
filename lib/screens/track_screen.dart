@@ -89,7 +89,8 @@ class _TrackplaylistState extends State<Trackplaylist> {
                     itemBuilder: (context, index) {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
-                        decoration:const BoxDecoration(
+                        decoration: BoxDecoration(
+                           borderRadius:BorderRadius.circular(20) ,
                             color: Colors.white38),
                         child: ListTile(
                       leading:  QueryArtworkWidget(
