@@ -160,11 +160,6 @@ class _HomeContentState extends State<HomeContent> {
     super.initState();
     s = music();
   }
-  @override
-  void dispose() {
-    super.dispose();
-    audioPlayer.dispose();
-  }
   Future<List<SongModel>> getaudio() async {
     List<SongModel> s = await _audioQuery.querySongs(
       sortType: null,
@@ -179,122 +174,125 @@ class _HomeContentState extends State<HomeContent> {
 late Widget  leadingWidget;
   @override
   Widget build(BuildContext context) {
-    return  FutureBuilder(
-          future: s,
-          builder: (context, item) {
-            if (item.data == null) {
-              getaudio();
-              return  const Center(child: CircularProgressIndicator());
-            } else if (item.connectionState == ConnectionState.waiting) {
-              return  const Center(child: CircularProgressIndicator());
-            } else {
-              return ListView.builder(
-                  itemCount: item.data!.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                         borderRadius:BorderRadius.circular(20) ,
-                          color: Colors.white38),
-                      child: ListTile(
-                    leading:  QueryArtworkWidget(
-                      artworkQuality: FilterQuality.high,
-                        id: item.data![index].songid,
-                       type: ArtworkType.AUDIO,
-                       size: 50,       
-                       nullArtworkWidget:const  Icon(Icons.music_note_rounded,color: Colors.black,size: 30,),
-                       ),
-                        title: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Text(
-                            // ignore: unnecessary_string_interpolations
-                            '${item.data![index].name
-                            // .substring(0,13)
-                            }',
-                             overflow: TextOverflow.ellipsis,
+    return  Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FutureBuilder(
+            future: s,
+            builder: (context, item) {
+              if (item.data == null) {
+                getaudio();
+                return  const Center(child: CircularProgressIndicator());
+              } else if (item.connectionState == ConnectionState.waiting) {
+                return  const Center(child: CircularProgressIndicator());
+              } else {
+                return ListView.builder(
+                    itemCount: item.data!.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                           borderRadius:BorderRadius.circular(20) ,
+                            color: Colors.white38),
+                        child: ListTile(
+                      leading:  QueryArtworkWidget(
+                        artworkQuality: FilterQuality.high,
+                          id: item.data![index].songid,
+                         type: ArtworkType.AUDIO,
+                         size: 50,       
+                         nullArtworkWidget:const  Icon(Icons.music_note_rounded,color: Colors.black,size: 30,),
+                         ),
+                          title: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            child: Text(
+                              // ignore: unnecessary_string_interpolations
+                              '${item.data![index].name
+                              // .substring(0,13)
+                              }',
+                               overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        // ignore: unnecessary_string_interpolations
-                        subtitle: Text('${item.data![index].artist}',
-                        overflow:TextOverflow.ellipsis,
-                        ),
-                        trailing: PopupMenuButton(
-                            color:voilet,
-                          icon:const Icon( FontAwesomeIcons.ellipsisVertical,color: Colors.black,),
-                          itemBuilder: (BuildContext context) {
-                            return[
-                              PopupMenuItem(
-                                child: Row(
-                                  children: [
-                                   const Icon(Icons.favorite,color: Colors.white,),
-                                      SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                                 ),
-                                  mytext2('Add to Favourite'),
-                                  ],
-                                ),
-                                onTap: ()async {
-                                  final song = item.data![index];
-                                            final favSongs = await favMusic();
-                                            final favSong = Favmodel(
-                                              name: song.name,
-                                              songid: song.songid.toInt(),
-                                              uri: song.uri,
-                                              artist: song.artist.toString(),
-                                              path: song.path,
-                                              
-                                            );
-                                            await addFavSong(favsongs: [...favSongs, favSong]);
-                                             ScaffoldMessenger.of(context).showSnackBar(
-                                           SnackBar(
-                                           content: mytext2('Song added to favorites'),
-                                           backgroundColor: Colors.grey,
-                                          ),
-                                             );
-                                },
-                                ),
-                             PopupMenuItem(
-                                child:  Row(
-                                  children: [
-                                   const  Icon(Icons.playlist_add,color: Colors.white,),
-                                    SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                                 ),
-                                   mytext2('Add to Playlist'),
-                                  ],
-                                ),
-                               onTap: (){ bottomplaylistsheet(context: context, songId:item.data![index].songid); },
-                                ),
-                                 PopupMenuItem(
-                                child:  Row(
-                                  children: [
-                                   const  Icon(Icons.share,color: Colors.white,),
-                                  SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                                 ),
-                                    mytext2('Share'),
-                                  ],
-                                ),onTap: () {
-                                  sharemusic(item.data![index]);
+                          // ignore: unnecessary_string_interpolations
+                          subtitle: Text('${item.data![index].artist}',
+                          overflow:TextOverflow.ellipsis,
+                          ),
+                          trailing: PopupMenuButton(
+                              color:voilet,
+                            icon:const Icon( FontAwesomeIcons.ellipsisVertical,color: Colors.black,),
+                            itemBuilder: (BuildContext context) {
+                              return[
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                     const Icon(Icons.favorite,color: Colors.white,),
+                                        SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
+                                   ),
+                                    mytext2('Add to Favourite'),
+                                    ],
+                                  ),
+                                  onTap: ()async {
+                                    final song = item.data![index];
+                                              final favSongs = await favMusic();
+                                              final favSong = Favmodel(
+                                                name: song.name,
+                                                songid: song.songid.toInt(),
+                                                uri: song.uri,
+                                                artist: song.artist.toString(),
+                                                path: song.path,
+                                                
+                                              );
+                                              await addFavSong(favsongs: [...favSongs, favSong]);
+                                               ScaffoldMessenger.of(context).showSnackBar(
+                                             SnackBar(
+                                             content: mytext2('Song added to favorites'),
+                                             backgroundColor: Colors.grey,
+                                            ),
+                                               );
                                   },
-                                ),
-                            ];
-                          }),
-                        onTap: () {
-                          context.read<songModelProvider>().setId(item.data![index].songid);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PlayScreen(
-                                  songModel: item.data!,
-                                  audioPlayer: audioPlayer,
-                                  index: index,
-                  
-                                ),
-                              ));
-                        },
-                      ),
-                    );
-                  });
-            }
-          });
+                                  ),
+                               PopupMenuItem(
+                                  child:  Row(
+                                    children: [
+                                     const  Icon(Icons.playlist_add,color: Colors.white,),
+                                      SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
+                                   ),
+                                     mytext2('Add to Playlist'),
+                                    ],
+                                  ),
+                                 onTap: (){ bottomplaylistsheet(context: context, songId:item.data![index].songid); },
+                                  ),
+                                   PopupMenuItem(
+                                  child:  Row(
+                                    children: [
+                                     const  Icon(Icons.share,color: Colors.white,),
+                                    SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
+                                   ),
+                                      mytext2('Share'),
+                                    ],
+                                  ),onTap: () {
+                                    sharemusic(item.data![index]);
+                                    },
+                                  ),
+                              ];
+                            }),
+                          onTap: () {
+                            context.read<songModelProvider>().setId(item.data![index].songid);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PlayScreen(
+                                    songModel: item.data!,
+                                    audioPlayer: audioPlayer,
+                                    index: index,
+                    
+                                  ),
+                                ));
+                          },
+                        ),
+                      );
+                    });
+              }
+            }),
+    );
     
   }
 }

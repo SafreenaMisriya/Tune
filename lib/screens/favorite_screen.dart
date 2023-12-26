@@ -70,99 +70,102 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder(
-                    future: dbfavsong,
-                    builder: (context, item) {
-                      if (item.data == null) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (item.data!.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/heart.gif'),
-                              Text(
-                                'NO FAVORITE SONGS',
-                                style: GoogleFonts.merienda(
-                                    color: Colors.white, letterSpacing: 5),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return ListView.builder(
-                            itemCount: item.data!.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white38),
-                                child: ListTile(
-                                  leading: QueryArtworkWidget(
-                                    artworkQuality: FilterQuality.high,
-                                    id: item.data![index].songid,
-                                    type: ArtworkType.AUDIO,
-                                    size: 50,
-                                    nullArtworkWidget: const Icon(
-                                      Icons.music_note_rounded,
-                                      color: Colors.black,
-                                      size: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FutureBuilder(
+                      future: dbfavsong,
+                      builder: (context, item) {
+                        if (item.data == null) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (item.data!.isEmpty) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/images/heart.gif'),
+                                Text(
+                                  'NO FAVORITE SONGS',
+                                  style: GoogleFonts.merienda(
+                                      color: Colors.white, letterSpacing: 5),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return ListView.builder(
+                              itemCount: item.data!.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white38),
+                                  child: ListTile(
+                                    leading: QueryArtworkWidget(
+                                      artworkQuality: FilterQuality.high,
+                                      id: item.data![index].songid,
+                                      type: ArtworkType.AUDIO,
+                                      size: 50,
+                                      nullArtworkWidget: const Icon(
+                                        Icons.music_note_rounded,
+                                        color: Colors.black,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  title: Text(
-                                    item.data![index].name,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Text(
-                                    item.data![index].artist,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  trailing: IconButton(
-                                      onPressed: () async {
-                                        int songId = item.data![index].songid;
-                                        await removeFromFavourite(songId);
+                                    title: Text(
+                                      item.data![index].name,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Text(
+                                      item.data![index].artist,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    trailing: IconButton(
+                                        onPressed: () async {
+                                          int songId = item.data![index].songid;
+                                          await removeFromFavourite(songId);
+                                          setState(() {
+                                            dbfavsong = favMusic();
+                                          });
+                                          // ignore: use_build_context_synchronously
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: mytext2(
+                                                  'Song removed from favorites'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.favorite,
+                                          color: Colors.white,
+                                          size: 25,
+                                        )),
+                                    onTap: () {
+                                      context
+                                          .read<songModelProvider>()
+                                          .setId(item.data![index].songid);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => PlayScreen(
+                                              FavSongModel: item.data!,
+                                              audioPlayer: audioPlayer,
+                                              index: index,
+                                            ),
+                                          )).then((value) {
                                         setState(() {
                                           dbfavsong = favMusic();
                                         });
-                                        // ignore: use_build_context_synchronously
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: mytext2(
-                                                'Song removed from favorites'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      },
-                                      icon: const Icon(
-                                        Icons.favorite,
-                                        color: Colors.white,
-                                        size: 25,
-                                      )),
-                                  onTap: () {
-                                    context
-                                        .read<songModelProvider>()
-                                        .setId(item.data![index].songid);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PlayScreen(
-                                            FavSongModel: item.data!,
-                                            audioPlayer: audioPlayer,
-                                            index: index,
-                                          ),
-                                        )).then((value) {
-                                      setState(() {
-                                        dbfavsong = favMusic();
                                       });
-                                    });
-                                  },
-                                ),
-                              );
-                            });
-                      }
-                    }),
+                                    },
+                                  ),
+                                );
+                              });
+                        }
+                      }),
+                ),
               ),
             ],
           ),

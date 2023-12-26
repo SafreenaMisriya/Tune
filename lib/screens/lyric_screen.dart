@@ -73,7 +73,6 @@ Future<void> getLyrics(String songName, String artistName) async {
     }
   } catch (e) {
     setState(() {
-      // lyrics = 'Error: $e';
       ScaffoldMessenger.of(context).showSnackBar(
        SnackBar(
            content: mytext2('No Internet connection'),
@@ -88,12 +87,10 @@ Future<void> getLyrics(String songName, String artistName) async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Container(
         decoration: BoxDecoration(
           gradient: bgTheme2(),
         ),
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

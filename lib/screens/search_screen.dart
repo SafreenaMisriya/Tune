@@ -110,113 +110,116 @@ class _SearchScreenState extends State<SearchScreen> {
           Flexible(
             child: findsong.isEmpty
             ? Image.asset('assets/images/data.png')
-           : ListView.builder(
-              itemCount: findsong.length,
-              itemBuilder: (ctx, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                     borderRadius:BorderRadius.circular(20) ,
-                      color: Colors.white38),
-                  child: ListTile(
-                    leading:  QueryArtworkWidget(
-                       artworkQuality: FilterQuality.high,
-                    id: findsong[index].songid,
-                   type: ArtworkType.AUDIO,
-                   size: 50,
-                   nullArtworkWidget: const Icon(Icons.music_note_rounded,color: Colors.black,size: 30,),
-                   ),
-                    
-                    title: Text(
-                      findsong[index].name
-                      // .substring(0,13)
-                       ,
+           : Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: ListView.builder(
+                itemCount: findsong.length,
+                itemBuilder: (ctx, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                       borderRadius:BorderRadius.circular(20) ,
+                        color: Colors.white38),
+                    child: ListTile(
+                      leading:  QueryArtworkWidget(
+                         artworkQuality: FilterQuality.high,
+                      id: findsong[index].songid,
+                     type: ArtworkType.AUDIO,
+                     size: 50,
+                     nullArtworkWidget: const Icon(Icons.music_note_rounded,color: Colors.black,size: 30,),
+                     ),
+                      
+                      title: Text(
+                        findsong[index].name
+                        // .substring(0,13)
+                         ,
+                         overflow:TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(findsong[index].artist,
                        overflow:TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(findsong[index].artist,
-                     overflow:TextOverflow.ellipsis,
-                    ),
-                    trailing: 
-                    PopupMenuButton(
-                        color: voilet,
-                      icon:const Icon( FontAwesomeIcons.ellipsisVertical,color: Colors.black,),
-                      itemBuilder: (BuildContext context) {
-                        return[
-                          PopupMenuItem(
-                            child:  Row(
-                              children: [
-                               const Icon(Icons.favorite,color: Colors.white,),
-                                SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                               ),
-                              mytext2('Add to Favourite'),
-                              ],
-                            ),
-                            onTap: ()async {
-                                final song = findsong[index];
-                                        final favSongs = await favMusic();
-                                        final favSong = Favmodel(
-                                          name: song.name,
-                                          songid: song.songid.toInt(),
-                                          uri: song.uri,
-                                          artist: song.artist.toString(),
-                                          path: song.path,
-                                        );
-                                        await addFavSong(favsongs: [...favSongs, favSong]);
-                                         ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                         content: mytext2('Song added to favorites'),
-                                         backgroundColor: Colors.grey,
-                                        ),
-                                           );
-                            },),
-                         PopupMenuItem(
-                            child: Row(
-                              children: [
-                              const  Icon(Icons.playlist_add,color: Colors.white),
-                               SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                               ),
-                               mytext2('Add to Playlist'),
-                              ],
-                            ),
-                           onTap: () {
-                             bottomplaylistsheet(context: context, songId: findsong[index].songid);
-                           },
-                            ),
+                      ),
+                      trailing: 
+                      PopupMenuButton(
+                          color: voilet,
+                        icon:const Icon( FontAwesomeIcons.ellipsisVertical,color: Colors.black,),
+                        itemBuilder: (BuildContext context) {
+                          return[
                             PopupMenuItem(
-                            child: Row(
-                              children: [
-                                const Icon(Icons.share,color: Colors.white),
+                              child:  Row(
+                                children: [
+                                 const Icon(Icons.favorite,color: Colors.white,),
+                                  SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
+                                 ),
+                                mytext2('Add to Favourite'),
+                                ],
+                              ),
+                              onTap: ()async {
+                                  final song = findsong[index];
+                                          final favSongs = await favMusic();
+                                          final favSong = Favmodel(
+                                            name: song.name,
+                                            songid: song.songid.toInt(),
+                                            uri: song.uri,
+                                            artist: song.artist.toString(),
+                                            path: song.path,
+                                          );
+                                          await addFavSong(favsongs: [...favSongs, favSong]);
+                                           ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                           content: mytext2('Song added to favorites'),
+                                           backgroundColor: Colors.grey,
+                                          ),
+                                             );
+                              },),
+                           PopupMenuItem(
+                              child: Row(
+                                children: [
+                                const  Icon(Icons.playlist_add,color: Colors.white),
                                  SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
-                               ),
-                               mytext2('Share'),
-                              ],
-                            ),
-                            onTap: () {
-                                  sharemusic(findsong[index]);
-                                },
-                            ),
-                        ];
-                      }),
-                    onTap: ()async {
-                        FocusScope.of(context).unfocus();
-                        await Future.delayed(const Duration(milliseconds: 300));
-                      context.read<songModelProvider>().setId(findsong[index].songid);
-                       WidgetsBinding.instance.addPostFrameCallback((_) { 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>PlayScreen(
-                              index: index,
-                              songModel:findsong,
-                              audioPlayer: audioPlayer)
-                          ));
-                          });
-                    },
-                  ),
-                );
-              
-              },
-            ),
+                                 ),
+                                 mytext2('Add to Playlist'),
+                                ],
+                              ),
+                             onTap: () {
+                               bottomplaylistsheet(context: context, songId: findsong[index].songid);
+                             },
+                              ),
+                              PopupMenuItem(
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.share,color: Colors.white),
+                                   SizedBox(  width: MediaQuery.of(context).size.width * 0.03,
+                                 ),
+                                 mytext2('Share'),
+                                ],
+                              ),
+                              onTap: () {
+                                    sharemusic(findsong[index]);
+                                  },
+                              ),
+                          ];
+                        }),
+                      onTap: ()async {
+                          FocusScope.of(context).unfocus();
+                          await Future.delayed(const Duration(milliseconds: 300));
+                        context.read<songModelProvider>().setId(findsong[index].songid);
+                         WidgetsBinding.instance.addPostFrameCallback((_) { 
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>PlayScreen(
+                                index: index,
+                                songModel:findsong,
+                                audioPlayer: audioPlayer)
+                            ));
+                            });
+                      },
+                    ),
+                  );
+                
+                },
+              ),
+           ),
           ),
         ],
       ),

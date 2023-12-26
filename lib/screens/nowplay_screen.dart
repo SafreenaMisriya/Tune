@@ -166,17 +166,20 @@ class _PlayScreenState extends State<PlayScreen> {
                         size: 25,
                       )),
                   IconButton(
-                      onPressed: () {  
-                        bottomplaylistsheet(context: context,
+                      onPressed: () {   
+                        
+                       bottomplaylistsheet(context: context,
                          songId:   widget.FavSongModel != null
                               ? widget.FavSongModel![widget.index].songid
                               : widget.songModel![widget.index].songid);
+                        
                       },
                       icon: const Icon(
                         Icons.playlist_add,
                         color: Colors.white,
                         size: 25,
-                      )),
+                      )
+                      ),
                 ],
               ),
                SizedBox(  height: MediaQuery.of(context).size.height * .01,),

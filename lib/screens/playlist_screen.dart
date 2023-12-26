@@ -5,6 +5,7 @@ import 'package:tune/Screens/favorite_screen.dart';
 import 'package:tune/Screens/recently_played.dart';
 import 'package:tune/db/function/db_function.dart';
 import 'package:tune/db/model/db_playlistmodel.dart';
+import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
 import 'package:tune/screens/track_screen.dart';
@@ -53,7 +54,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     ListTile(
                       leading: mytext('CREATE PLAYLIST',20,Colors.white),
                       trailing:  IconButton(onPressed: (){
-                             showCreatePlaylistBottomSheet(context: context);    
+                             showCreatePlaylistBottomSheet(context: context); 
+                            // setState(() {
+                            //    playlistsheet(context: context) ; 
+                            // }); 
+                            
                             }, icon: const Icon(Icons.add,size: 40,color: Colors.white,)),
                     ),
                   SizedBox(  height: MediaQuery.of(context).size.height * .03, ),    
