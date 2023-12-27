@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:tune/Povider/image_provider.dart';
@@ -489,7 +490,14 @@ void _playNext() {
         uri = widget.songModel![widget.index].uri;
       }
       await audioPlayers.setAudioSource(
-        AudioSource.uri(Uri.parse(uri)),
+        AudioSource.uri(Uri.parse(uri),
+        tag:MediaItem(     
+    id: ' ${widget.songModel![widget.index].songid}',
+    title: ' ${widget.songModel![widget.index].name}',
+    artist:' ${widget.songModel![widget.index].artist}',
+  ),
+        ),
+        
       );
    audioPlayers.play();
       audioPlayers.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);

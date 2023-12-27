@@ -33,26 +33,22 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^10.6.0
   google_fonts: ^6.1.0
+  hive: null
   hive_flutter: ^1.1.0
+  http: ^1.1.0
   just_audio: ^0.9.36
+  just_audio_background: ^0.0.1-beta.11
   on_audio_query: ^2.9.0
-  provider: ^6.1.1
   permission_handler: ^11.0.1
-  hive:
+  provider: ^6.1.1
   share: ^2.0.4
   url_launcher: ^6.2.2
-  http: ^1.1.0
 dev_dependencies:
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+  build_runner: null
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  hive_generator: 
-  build_runner: 
+  hive_generator: null
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,8 +66,6 @@ flutter:
     - assets/images/sad.gif
     - assets/images/heart.gif
     - assets/images/data.png
-
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

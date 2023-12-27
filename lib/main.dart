@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 import 'package:tune/Povider/image_provider.dart';
 import 'package:tune/db/model/db_playlistmodel.dart';
@@ -11,6 +12,11 @@ import 'package:tune/db/model/db_model.dart';
 
 
 Future<void> main() async{
+   await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   WidgetsFlutterBinding.ensureInitialized();
  await Hive.initFlutter();
  if(!Hive.isAdapterRegistered( MusicSongAdapter().typeId)){
