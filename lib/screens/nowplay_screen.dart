@@ -11,6 +11,7 @@ import 'package:tune/db/model/db_favmodel.dart';
 import 'package:tune/db/model/db_model.dart';
 import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
+import 'package:tune/screens/home_screen.dart';
 import 'package:tune/screens/lyric_screen.dart';
 import 'package:tune/settings/share.dart';
 
@@ -20,7 +21,7 @@ class PlayScreen extends StatefulWidget {
   PlayScreen({
     Key? key,
     this.songModel,
-    required this.audioPlayer,
+    
     required this.index,
     // ignore: non_constant_identifier_names
     this.FavSongModel,
@@ -28,7 +29,7 @@ class PlayScreen extends StatefulWidget {
 
   final List<MusicSong>? songModel;
 
-  final AudioPlayer audioPlayer;
+
   
   int index;
   // ignore: non_constant_identifier_names
@@ -51,7 +52,7 @@ class _PlayScreenState extends State<PlayScreen> {
     super.initState();
     checkIsFavorite();
     playSong();
-    widget.audioPlayer.playerStateStream.listen((state) {
+    audioPlayers.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed) {
         // Song finished, play the next one
         _playNext();
@@ -212,7 +213,7 @@ class _PlayScreenState extends State<PlayScreen> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        _isShuffling = !_isShuffling; // Toggle shuffling
+                        _isShuffling = !_isShuffling; 
                       });
                     },
                     icon: Icon(Icons.shuffle_sharp,
@@ -235,9 +236,9 @@ class _PlayScreenState extends State<PlayScreen> {
                     onPressed: () {
                       setState(() {
                         if (_isPlaying) {
-                          widget.audioPlayer.pause();
+                          audioPlayers.pause();
                         } else {
-                          widget.audioPlayer.play();
+                          audioPlayers.play();
                         }
                         _isPlaying = !_isPlaying;
                       });
@@ -267,7 +268,7 @@ class _PlayScreenState extends State<PlayScreen> {
                     onPressed: () {
                       setState(() {
                         _isLooping = !_isLooping;
-                        widget.audioPlayer.setLoopMode(
+                        audioPlayers.setLoopMode(
                             _isLooping ? LoopMode.one : LoopMode.off);
                       });
                     },
@@ -289,7 +290,7 @@ class _PlayScreenState extends State<PlayScreen> {
   // ignore: non_constant_identifier_names
   void ChangeToSeconds(seconds) {
     Duration duration = Duration(seconds: seconds);
-    widget.audioPlayer.seek(duration);
+   audioPlayers.seek(duration);
   }
 
 void _playNext() {
@@ -311,24 +312,24 @@ void _playNext() {
 
     int nextIndex = (currentIndex + 1) % shuffledSongs.length;
 
-    widget.audioPlayer.stop();
-    widget.audioPlayer.setAudioSource(
+    audioPlayers.stop();
+    audioPlayers.setAudioSource(
       AudioSource.uri(Uri.parse(shuffledSongs[nextIndex].uri)),
     );
-    widget.audioPlayer.play();
+    audioPlayers.play();
 
     setState(() {
       _isPlaying = true;
       widget.index = widget.songModel!.indexOf(shuffledSongs[nextIndex]);
     });
 
-    widget.audioPlayer.durationStream.first.then((d) {
+    audioPlayers.durationStream.first.then((d) {
       setState(() {
         _duration = d!;
       });
     });
 
-    widget.audioPlayer.positionStream.first.then((p) {
+   audioPlayers.positionStream.first.then((p) {
       setState(() {
         _position = p;
       });
@@ -338,22 +339,22 @@ void _playNext() {
   } else {
     if (widget.FavSongModel != null) {
       int nextIndex = (widget.index + 1) % widget.FavSongModel!.length;
-      widget.audioPlayer.stop();
-      widget.audioPlayer.setAudioSource(
+      audioPlayers.stop();
+      audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(widget.FavSongModel![nextIndex].uri)),
       );
-      widget.audioPlayer.play();
+      audioPlayers.play();
       setState(() {
         _isPlaying = true;
         widget.index = nextIndex;
       });
-      widget.audioPlayer.durationStream.first.then((d) {
+      audioPlayers.durationStream.first.then((d) {
         setState(() {
           _duration = d!;
         });
       });
 
-      widget.audioPlayer.positionStream.first.then((p) {
+      audioPlayers.positionStream.first.then((p) {
         setState(() {
           _position = p;
         });
@@ -361,23 +362,23 @@ void _playNext() {
       checkIsFavorite();
     } else {
       int nextIndex = (widget.index + 1) % widget.songModel!.length;
-      widget.audioPlayer.stop();
-      widget.audioPlayer.setAudioSource(
+      audioPlayers.stop();
+      audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(widget.songModel![nextIndex].uri)),
       );
 
-      widget.audioPlayer.play();
+      audioPlayers.play();
       setState(() {
         _isPlaying = true;
         widget.index = nextIndex;
       });
-      widget.audioPlayer.durationStream.first.then((d) {
+      audioPlayers.durationStream.first.then((d) {
         setState(() {
           _duration = d!;
         });
       });
 
-      widget.audioPlayer.positionStream.first.then((p) {
+      audioPlayers.positionStream.first.then((p) {
         setState(() {
           _position = p;
         });
@@ -392,11 +393,11 @@ void _playNext() {
     if (widget.FavSongModel != null) {
       int previousIndex = (widget.index - 1 + widget.FavSongModel!.length) %
           widget.FavSongModel!.length;
-      widget.audioPlayer.stop();
-      widget.audioPlayer.setAudioSource(
+      audioPlayers.stop();
+      audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(widget.FavSongModel![previousIndex].uri)),
       );
-      widget.audioPlayer.play();
+      audioPlayers.play();
       setState(() {
         _isPlaying = true;
         widget.index = previousIndex;
@@ -405,11 +406,11 @@ void _playNext() {
     } else {
       int previousIndex = (widget.index - 1 + widget.songModel!.length) %
           widget.songModel!.length;
-      widget.audioPlayer.stop();
-      widget.audioPlayer.setAudioSource(
+      audioPlayers.stop();
+      audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(widget.songModel![previousIndex].uri)),
       );
-      widget.audioPlayer.play();
+      audioPlayers.play();
       setState(() {
         _isPlaying = true;
         widget.index = previousIndex;
@@ -487,20 +488,20 @@ void _playNext() {
       } else {
         uri = widget.songModel![widget.index].uri;
       }
-      await widget.audioPlayer.setAudioSource(
+      await audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(uri)),
       );
-   widget.audioPlayer.play();
-      widget.audioPlayer.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);
+   audioPlayers.play();
+      audioPlayers.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);
       _isPlaying = true;
-      widget.audioPlayer.durationStream.listen((d) {
+      audioPlayers.durationStream.listen((d) {
         if(mounted){
            setState(() {
           _duration = d!;
         });
         }
       });
-      widget.audioPlayer.positionStream.listen((p) {
+      audioPlayers.positionStream.listen((p) {
         if(mounted){
            setState(() {
           _position = p;

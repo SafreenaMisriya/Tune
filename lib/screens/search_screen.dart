@@ -1,7 +1,5 @@
 
-
 // ignore_for_file: file_names, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -14,7 +12,6 @@ import 'package:tune/db/model/db_model.dart';
 import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
-import 'package:tune/screens/home_screen.dart';
 import 'package:tune/settings/share.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -210,7 +207,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               builder: (context) =>PlayScreen(
                                 index: index,
                                 songModel:findsong,
-                                audioPlayer: audioPlayer)
+                                )
                             ));
                             });
                       },

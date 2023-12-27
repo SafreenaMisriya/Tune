@@ -10,7 +10,6 @@ import 'package:tune/db/model/db_favmodel.dart';
 import 'package:tune/db/model/db_playlistmodel.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
-import 'package:tune/screens/home_screen.dart';
 import 'package:tune/screens/nowplay_screen.dart';
 import 'package:tune/screens/select_screen.dart';
 
@@ -162,7 +161,6 @@ class _TrackplaylistState extends State<Trackplaylist> {
                                   MaterialPageRoute(
                                     builder: (context) => PlayScreen(
                                       songModel: item.data!,
-                                      audioPlayer: audioPlayer,
                                       index: index,
                                     ),
                                   ));

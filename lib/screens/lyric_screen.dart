@@ -50,7 +50,6 @@ Future<void> getLyrics(String songName, String artistName) async {
         if (lyricsResponse.statusCode == 200 && lyricsData['message']['header']['status_code'] == 200) {
           String trackLyrics = lyricsData['message']['body']['lyrics']['lyrics_body'];
 
-          // Remove the Musixmatch disclaimer text from the lyrics
           trackLyrics = trackLyrics.split('\n').where((line) => !line.contains('This Lyrics is NOT for Commercial use ')).join('\n').trim();
 
           setState(() {

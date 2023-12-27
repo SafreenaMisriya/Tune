@@ -5,7 +5,6 @@ import 'package:tune/Screens/favorite_screen.dart';
 import 'package:tune/Screens/recently_played.dart';
 import 'package:tune/db/function/db_function.dart';
 import 'package:tune/db/model/db_playlistmodel.dart';
-import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
 import 'package:tune/screens/track_screen.dart';

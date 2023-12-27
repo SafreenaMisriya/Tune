@@ -32,7 +32,7 @@ class PrivcyScreen extends StatelessWidget {
        
        This Privacy Policy ("Policy") explains how information about You is collected, used, and disclosed by Your access or use of this Site or otherwise as a result of Your interactions with Us. By visiting this Site directly or through another site, You accept the terms and conditions of this Policy. This Policy applies to this Site. We are not responsible for the content or privacy practices on any website not operated by Us to which this Site links or that links to this Site.
        
-       We respect children’s privacy. We do not knowingly or intentionally collect personal information from children under age 13. Elsewhere on the Site, you have represented and warranted that you are either 18 years of age or using the Site with the supervision of a parent or guardian. If you are under the age of 13, please do not submit any personal information to Us and rely on a parent or guardian to assist you.
+       We respect children's privacy. We do not knowingly or intentionally collect personal information from children under age 13. Elsewhere on the Site, you have represented and warranted that you are either 18 years of age or using the Site with the supervision of a parent or guardian. If you are under the age of 13, please do not submit any personal information to Us and rely on a parent or guardian to assist you.
        
        Information Collection
        

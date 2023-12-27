@@ -10,7 +10,6 @@ import 'package:tune/db/function/db_function.dart';
 import 'package:tune/db/model/db_favmodel.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
-import 'package:tune/screens/home_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   final bool visible;
@@ -31,7 +30,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-    // dbfavsong = favMusic();
     setState(() {
       dbfavsong = favMusic();
     });
@@ -150,8 +148,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => PlayScreen(
-                                              FavSongModel: item.data!,
-                                              audioPlayer: audioPlayer,
+                                              FavSongModel: item.data!,                                          
                                               index: index,
                                             ),
                                           )).then((value) {

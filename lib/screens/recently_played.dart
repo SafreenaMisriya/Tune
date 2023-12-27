@@ -9,7 +9,6 @@ import 'package:tune/db/model/db_favmodel.dart';
 import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
-import 'package:tune/screens/home_screen.dart';
 import 'package:tune/screens/nowplay_screen.dart';
 import 'package:tune/settings/share.dart';
 import '../Povider/image_provider.dart';
@@ -156,7 +155,6 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                                 MaterialPageRoute(
                                   builder: (context) => PlayScreen(
                                     songModel: item.data!,
-                                    audioPlayer: audioPlayer,
                                     index: index,
                     
                                   ),

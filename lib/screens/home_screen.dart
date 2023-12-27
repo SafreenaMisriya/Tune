@@ -20,7 +20,7 @@ import 'package:tune/reuse_code/bottom.dart';
 import 'package:tune/reuse_code/color.dart';
 import 'package:tune/reuse_code/fonts.dart';
 import 'package:tune/settings/share.dart';
- final audioPlayer = AudioPlayer();
+ final audioPlayers = AudioPlayer();
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -145,12 +145,12 @@ class _HomeContentState extends State<HomeContent> {
   // ignore: non_constant_identifier_names
   PlaySong(String? uri) {
     try {
-        audioPlayer.setAudioSource(
+        audioPlayers.setAudioSource(
         AudioSource.uri(
         Uri.parse(uri!.toString()),
         ),
       );
-      audioPlayer.play();
+      audioPlayers.play();
     } on Exception {
       debugPrint('ERROR IS PASSING');
     }
@@ -281,9 +281,7 @@ late Widget  leadingWidget;
                                 MaterialPageRoute(
                                   builder: (context) => PlayScreen(
                                     songModel: item.data!,
-                                    audioPlayer: audioPlayer,
                                     index: index,
-                    
                                   ),
                                 ));
                           },
