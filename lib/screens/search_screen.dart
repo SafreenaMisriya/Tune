@@ -119,7 +119,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         color: Colors.white38),
                     child: ListTile(
                       leading:  QueryArtworkWidget(
-                         artworkQuality: FilterQuality.high,
+                        quality: 100,
                       id: findsong[index].songid,
                      type: ArtworkType.AUDIO,
                      size: 50,

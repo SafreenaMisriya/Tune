@@ -62,7 +62,7 @@ class _PlaylistallState extends State<Playlistall> {
                             color: Colors.white38),
                         child: ListTile(
                       leading:  QueryArtworkWidget(
-                        artworkQuality: FilterQuality.high,
+                        quality: 100,
                           id: item.data![index].songid,
                          type: ArtworkType.AUDIO,
                          size: 50,       

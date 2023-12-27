@@ -16,7 +16,6 @@ import 'package:tune/screens/home_screen.dart';
 import 'package:tune/screens/lyric_screen.dart';
 import 'package:tune/settings/share.dart';
 
-
 // ignore: must_be_immutable
 class PlayScreen extends StatefulWidget {
   PlayScreen({
@@ -47,7 +46,6 @@ class _PlayScreenState extends State<PlayScreen> {
   bool _isLooping = false;
   bool _isShuffling = false;
   bool islike = false;
-
   @override
   void initState() {
     super.initState();
@@ -111,7 +109,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       color: Colors.white30,
                       borderRadius: BorderRadius.circular(49),
                     ),
-                    child: const ArtWorkWidget(),
+                    child: const ArtWorkWidget( ),
                   ),
                 ),
               ),
@@ -145,7 +143,7 @@ class _PlayScreenState extends State<PlayScreen> {
                           widget.FavSongModel != null
                               ? widget.FavSongModel![widget.index].artist.toString()
                               : widget.songModel![widget.index].artist.toString() ==
-                                      "<unknown>"
+                                    "<unknown>"
                                   ? "<unknown>"
                                   : widget.FavSongModel != null
                                       ? widget.FavSongModel![widget.index].artist.toString() 
@@ -495,9 +493,8 @@ void _playNext() {
     id: ' ${widget.songModel![widget.index].songid}',
     title: ' ${widget.songModel![widget.index].name}',
     artist:' ${widget.songModel![widget.index].artist}',
-  ),
-        ),
-        
+    ),
+        ), 
       );
    audioPlayers.play();
       audioPlayers.setLoopMode(_isLooping ? LoopMode.one : LoopMode.off);
@@ -520,7 +517,6 @@ void _playNext() {
       debugPrint('Cannot Parse song');
     }
   }
-  
 }
 
 class ArtWorkWidget extends StatelessWidget {
@@ -532,11 +528,12 @@ class ArtWorkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {      
     return QueryArtworkWidget(
+      quality: 100,
       id: context.watch<songModelProvider>().id,
       type: ArtworkType.AUDIO,
       artworkHeight: 250,
       artworkWidth: 250,
-      artworkQuality: FilterQuality.high,
+      // artworkQuality: FilterQuality.high,
       nullArtworkWidget: const Icon(
         Icons.music_note_rounded,
         color: Colors.white,

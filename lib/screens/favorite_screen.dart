@@ -69,7 +69,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: FutureBuilder(
                       future: dbfavsong,
                       builder: (context, item) {
@@ -100,7 +100,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                       color: Colors.white38),
                                   child: ListTile(
                                     leading: QueryArtworkWidget(
-                                      artworkQuality: FilterQuality.high,
+                                     quality: 100,
                                       id: item.data![index].songid,
                                       type: ArtworkType.AUDIO,
                                       size: 50,

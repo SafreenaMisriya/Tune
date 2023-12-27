@@ -195,7 +195,7 @@ late Widget  leadingWidget;
                             color: Colors.white38),
                         child: ListTile(
                       leading:  QueryArtworkWidget(
-                        artworkQuality: FilterQuality.high,
+                        quality: 100,
                           id: item.data![index].songid,
                          type: ArtworkType.AUDIO,
                          size: 50,       
