@@ -117,8 +117,12 @@ class _PlayScreenState extends State<PlayScreen> {
                padding: const EdgeInsets.only(left: 290),
                child: IconButton(onPressed: (){
                 Navigator.push(context,MaterialPageRoute(builder: (context)=>LyricsPage(
-                  songName: widget.songModel![widget.index].name,
-                  artistName: widget.songModel![widget.index].artist,
+                  songName: widget.FavSongModel != null
+                              ? widget.FavSongModel![widget.index].name
+                              : widget.songModel![widget.index].name,
+                  artistName:widget.FavSongModel != null
+                                      ? widget.FavSongModel![widget.index].artist
+                                      : widget.songModel![widget.index].artist
     
                 )));
                }, icon: const Icon(Icons.arrow_forward_ios_rounded,size: 30,color: Colors.white,)),

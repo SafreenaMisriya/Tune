@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void requestPermission() {
     Permission.storage.request();
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
