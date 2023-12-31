@@ -116,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                        borderRadius:BorderRadius.circular(20) ,
-                        color: Colors.white38),
+                        color: Colors.white54),
                     child: ListTile(
                       leading:  QueryArtworkWidget(
                         quality: 100,

@@ -80,7 +80,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               return ListTile(
                 leading: Container(
                   decoration: const BoxDecoration(
-                    color: Colors.white30,
+                    color: Colors.white,
                   ),
                   child:  Icon(Icons.music_note_outlined, size: 30, color: Colors.orange[800]),
                 ),

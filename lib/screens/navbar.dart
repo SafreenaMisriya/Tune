@@ -28,7 +28,7 @@ class NavScreen extends StatelessWidget {
             leading:const  Icon(Icons.share),iconColor: Colors.black, 
             title:const Text('Share'), 
             onTap: ()async{
-              // shareapp();
+              launchURL();
               },
           ),
              ListTile(
@@ -62,4 +62,11 @@ class NavScreen extends StatelessWidget {
       throw "Try Again";
     }
   }
+  Future<void>launchURL() async {
+   // ignore: deprecated_member_use
+   if (await launch('https://www.amazon.com/dp/B0CR6GWT5S/ref=apps_sf_sta')) {
+      throw "Try Again";
+    }
+  
+}
 }
