@@ -494,9 +494,9 @@ void _playNext() {
       await audioPlayers.setAudioSource(
         AudioSource.uri(Uri.parse(uri),
         tag:MediaItem(     
-    id: ' ${widget.songModel![widget.index].songid}',
-    title: ' ${widget.songModel![widget.index].name}',
-    artist:' ${widget.songModel![widget.index].artist}',
+    id: ' ${widget.songModel!=null? widget.songModel![widget.index].songid:widget.FavSongModel![widget.index].songid}',
+    title: ' ${widget.songModel!=null? widget.songModel![widget.index].name:widget.FavSongModel![widget.index].name}',
+    artist:' ${widget.songModel!=null? widget.songModel![widget.index].artist:widget.FavSongModel![widget.index].artist}',
     ),
         ), 
       );
