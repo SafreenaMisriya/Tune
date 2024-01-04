@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share/share.dart';
 import 'package:tune/settings/about_screen.dart';
 import 'package:tune/settings/privacy_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,7 +29,7 @@ class NavScreen extends StatelessWidget {
             leading:const  Icon(Icons.share),iconColor: Colors.black, 
             title:const Text('Share'), 
             onTap: ()async{
-              launchURL();
+             shareAPP();
               },
           ),
              ListTile(
@@ -62,11 +63,8 @@ class NavScreen extends StatelessWidget {
       throw "Try Again";
     }
   }
-  Future<void>launchURL() async {
-   // ignore: deprecated_member_use
-   if (await launch('https://www.amazon.com/dp/B0CR6GWT5S/ref=apps_sf_sta')) {
-      throw "Try Again";
-    }
-  
+
+shareAPP(){
+  Share.share('https://www.amazon.com/dp/B0CR6GWT5S/ref=apps_sf_sta');
 }
 }

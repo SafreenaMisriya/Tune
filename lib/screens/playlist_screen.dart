@@ -54,11 +54,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       leading: mytext('CREATE PLAYLIST',20,Colors.white),
                       trailing:  IconButton(onPressed: (){
                              showCreatePlaylistBottomSheet(context: context); 
-                            // setState(() {
-                            //    playlistsheet(context: context) ; 
-                            // }); 
-                            
-                            }, icon: const Icon(Icons.add,size: 40,color: Colors.white,)),
+                                                      }, icon: const Icon(Icons.add,size: 40,color: Colors.white,)),
                     ),
                   SizedBox(  height: MediaQuery.of(context).size.height * .03, ),    
             Expanded(
@@ -67,7 +63,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       builder: (context, snapshot) {
         if (snapshot.data == null) {
           return const CircularProgressIndicator();
-        } else {
+        } else if(snapshot.data!.isEmpty){
+           return Center(child: mytext('NO Playlist Created',20, Colors.white));
+        }else {
           return ListView.separated(
             shrinkWrap: true,
             itemCount: snapshot.data!.length,
@@ -144,7 +142,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       },
       ),
     ),
-    
               ],
             ),
         ),

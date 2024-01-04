@@ -176,6 +176,12 @@ late Widget  leadingWidget;
   Widget build(BuildContext context) {
     return  Padding(
       padding: const EdgeInsets.all(8.0),
+      child: RefreshIndicator(
+        onRefresh: ()async {
+        setState(() {
+          s=music();
+        });
+        },
       child: FutureBuilder(
             future: s,
             builder: (context, item) {
@@ -290,6 +296,7 @@ late Widget  leadingWidget;
                     });
               }
             }),
+      ),
     );
     
   }
